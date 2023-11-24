@@ -37,6 +37,11 @@ app.post("/register", async(req,res)=>{
         confirmPassword: req.body.confirmPassword
     }
 
+     // Check if password and confirm password are the same
+     if (data.password !== data.confirmPassword) {
+        return res.send("Passwords do not match. Please try again.");
+    }
+
     const existingUser = await collection.findOne({email: data.email});
 
     if(existingUser){
@@ -52,6 +57,7 @@ app.post("/register", async(req,res)=>{
         data.confirmPassword = hashconfirmPassword;
 const userdata = await collection.insertMany(data);
 console.log(userdata);
+res.send("User registered successfully!");
     }
 });
 
